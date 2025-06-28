@@ -16,9 +16,6 @@ const projectSchema = new mongoose.Schema({
     enum: ['planned', 'ongoing', 'completed', 'on-hold'],
     default: 'planned'
   },
-  technologies: [String],
-  projectUrl: String,
-  repositoryUrl: String,
   featured: {
     type: Boolean,
     default: false

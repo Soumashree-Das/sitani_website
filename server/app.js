@@ -4,6 +4,7 @@ import pkg from 'dotenv';
 import morgan from "morgan";
 import connectDB from "./src/db/config.db.js";
 import multer from "multer";
+import bodyParser from "body-parser";
 
 //routes imported
 import authRouter from "./src/routes/auth.router.js";
@@ -22,19 +23,20 @@ const app = express();
 
 //middlewares
 app.use(express.json());
-app.use(morgan("tiny"));
+// app.use(morgan("tiny"));
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true })); 
-// app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 
 import { initializeGridFS } from './src/controllers/acheivements.controller.js';
-import { initializeServicesGridFS } from "./src/controllers/services.controller.js";
+// import { initializeServicesGridFS } from "./src/controllers/services.controller.js";
 
 // After MongoDB connection is established
 const mongoUri = process.env.MONGO_URI;
 await initializeGridFS(mongoUri);
-await initializeServicesGridFS(mongoUri);
+// await initializeServicesGridFS(mongoUri);
 
 const upload = multer({
   storage: multer.memoryStorage(), // Store files in memory for GridFS

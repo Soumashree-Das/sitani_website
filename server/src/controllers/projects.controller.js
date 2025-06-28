@@ -3,10 +3,7 @@ import { Project } from "../models/project.model.js";
 export const createProject = async (req, res) => {
   try {
        const project = new Project({
-      ...req.body,
-      technologies: typeof req.body.technologies === 'string' 
-        ? req.body.technologies.split(',').map(t => t.trim())
-        : [] // default to empty array if not a string
+      ...req.body
     });
     
     await project.save();
