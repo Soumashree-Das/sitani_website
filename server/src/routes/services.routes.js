@@ -1,3 +1,26 @@
+// import express from 'express';
+// import {
+//     createService,
+//     getAllServices,
+//     getServiceById,
+//     updateService,
+//     deleteService,
+//     processServiceForm
+//     // getActiveServices,
+//     // getServiceStats
+// } from '../controllers/services.controller.js';
+// import multer from "multer";
+
+// const router = express.Router();
+
+// router.post('/create',processServiceForm,createService);                // Create new service
+// router.get('/', getAllServices);                      // Get all services with filters
+// router.get('/:id', getServiceById);                   // Get single service by ID
+// router.put('/:id', updateService);                     // Update service
+// router.delete('/:id', deleteService);                 // Delete service
+//           // Get service statistics
+
+// export default router;
 import express from 'express';
 import {
     createService,
@@ -5,31 +28,32 @@ import {
     getServiceById,
     updateService,
     deleteService,
-    processServiceForm
-    // getActiveServices,
-    // getServiceStats
+    getActiveServices,
+    getServiceStats
 } from '../controllers/services.controller.js';
-import multer from "multer";
+import { serviceImageUpload } from "../middlewares/fileUpload.middleware.js"
 
 const router = express.Router();
 
-// const upload = multer({ storage: multer.memoryStorage() });
+// Service routes with proper middleware integration
+router.post('/create',
+    serviceImageUpload.single('image'), // Handle single image upload
+    createService
+);
 
+router.get('/', getAllServices); // Get all services with optional filtering
 
-// export default upload;
-// Service CRUD operations
-router.post('/create',processServiceForm,createService);                // Create new service
-router.get('/', getAllServices);                      // Get all services with filters
-router.get('/:id', getServiceById);                   // Get single service by ID
-router.put('/:id', updateService);                     // Update service
-router.delete('/:id', deleteService);                 // Delete service
+router.get('/active', getActiveServices); // Get only active services
 
-// Image handling
-// router.get('/image/:imageId', getServiceImage);       // Get service image file
-// router.get('/image/:imageId/base64', getServiceImageBase64); // Get image as base64
+router.get('/stats', getServiceStats); // Get service statistics
 
-// Specialized service queries
-// router.get('/active/list', getActiveServices);        // Get services by category
-// router.get('/stats/all', getServiceStats);            // Get service statistics
+router.get('/:id', getServiceById); // Get single service by ID
+
+router.put('/update/:id',
+    serviceImageUpload.single('image'), // Handle single image upload for updates
+    updateService
+);
+
+router.delete('/:id', deleteService); // Delete service
 
 export default router;

@@ -140,7 +140,7 @@ import path from "path";
 const serviceSchema = new mongoose.Schema({
   heading: {
     type: String,
-    trim: true
+    required:true
   },
   description: {
     type: String,
@@ -159,9 +159,7 @@ const serviceSchema = new mongoose.Schema({
     type: String 
   },
   category: {
-    type: String,
-    enum: ['consulting', 'development', 'design', 'training', 'support', 'other'],
-    required: true
+    type: String
   },
   tags: [{
     type: String,

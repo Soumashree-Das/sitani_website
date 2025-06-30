@@ -10,8 +10,6 @@ import {
   getFeaturedAchievements,
   getAchievementsByCategory,
   getAchievementStats,
-  getAchievementImage,
-  getAchievementImageBase64
 } from '../controllers/acheivements.controller.js';
 
 const router = express.Router();
@@ -33,19 +31,17 @@ const upload = multer({
 });
 
 // Achievement CRUD Routes
-router.post('/', upload.single('image'), createAchievement);
+router.post('/', upload.none(), createAchievement);
 router.get('/', getAllAchievements);
 router.get('/recent', getRecentAchievements);
 router.get('/featured', getFeaturedAchievements);
 router.get('/stats', getAchievementStats);
 router.get('/category/:category', getAchievementsByCategory);
 router.get('/:id', getAchievementById);
-router.put('/:id', upload.single('image'), updateAchievement);
+router.put('/:id', upload.none(), updateAchievement);
 router.delete('/:id', deleteAchievement);
 
 // Image Routes
-router.get('/image/:imageId', getAchievementImage); // Serves actual image
-router.get('/image-base64/:imageId', getAchievementImageBase64); // Returns base64
 
 export default router;
 // import { getAllAchievements,getRecentAchievements,createAchievement } from "../controllers/acheivements.controller.js";
@@ -58,3 +54,5 @@ export default router;
 // router.get("/get-all",getAllAchievements);      //http://localhost:8090/api/v1/acheivements/get-all
 
 // export default router;
+
+// Update achievement with optional image upload

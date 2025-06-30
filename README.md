@@ -30,3 +30,16 @@ Implementation Checklist
 ◻️Optionally, store the file metadata (like URL or public ID) in a MongoDB database.
 ◻️If Cloudinary upload fails, use fs.unlink() to delete the local temp file.
 ◻️Add error handling and success confirmation.
+
+
+
+#TO DO 
+1.email sending fix 
+2.services need images
+3.projects when clicked show details of the project - 
+            a. video (when not clicked stays still)
+            b. initially very few details
+4.about us -
+            a. video in the hero section . below it all the details of the page as it is
+            b. change the ui (remove the learn more)
+5.fix all minor inconsistencies in the ui
