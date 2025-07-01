@@ -15,18 +15,60 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
  * @param {string[]} [options.allowedTypes=['image/jpeg', 'image/png']] - Allowed MIME types
  * @returns {multer.Multer} Configured multer instance
  */
-const createUploader = ({ 
-  subfolder, 
-  filePrefix = 'file', 
+
+// const createUploader = ({ 
+//   subfolder, 
+//   filePrefix = 'file', 
+//   maxSize = 10,
+//   allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
+// }) => {
+//   // Configure storage
+//   const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//       const uploadDir = path.join(__dirname, '..', 'uploads', subfolder);
+      
+//       // Create directory if it doesn't exist
+//       if (!fs.existsSync(uploadDir)) {
+//         fs.mkdirSync(uploadDir, { recursive: true });
+//       }
+//       cb(null, uploadDir);
+//     },
+//     filename: (req, file, cb) => {
+//       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+//       const ext = path.extname(file.originalname);
+//       cb(null, `${filePrefix}-${uniqueSuffix}${ext}`);
+//     }
+//   });
+
+//   // File filter
+//   const fileFilter = (req, file, cb) => {
+//     if (allowedTypes.includes(file.mimetype)) {
+//       cb(null, true);
+//     } else {
+//       cb(new Error(`Invalid file type. Only ${allowedTypes.join(', ')} are allowed.`), false);
+//     }
+//   };
+
+//   return multer({ 
+//     storage,
+//     fileFilter,
+//     limits: {
+//       fileSize: maxSize * 1024 * 1024 // Convert MB to bytes
+//     }
+//   });
+// };
+
+export const createUploader = ({
+  subfolder,
+  filePrefix = 'file',
   maxSize = 10,
   allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
 }) => {
-  // Configure storage
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       const uploadDir = path.join(__dirname, '..', 'uploads', subfolder);
       
-      // Create directory if it doesn't exist
+      
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
       }
@@ -39,21 +81,18 @@ const createUploader = ({
     }
   });
 
-  // File filter
   const fileFilter = (req, file, cb) => {
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error(`Invalid file type. Only ${allowedTypes.join(', ')} are allowed.`), false);
+      cb(new Error(`Invalid file type: ${file.mimetype}`), false);
     }
   };
 
-  return multer({ 
+  return multer({
     storage,
     fileFilter,
-    limits: {
-      fileSize: maxSize * 1024 * 1024 // Convert MB to bytes
-    }
+    limits: { fileSize: maxSize * 1024 * 1024 }
   });
 };
 
@@ -90,6 +129,21 @@ export const documentUpload = createUploader({
   maxSize: 20,
   allowedTypes: ['application/pdf', 'image/jpeg', 'image/png']
 });
+
+export const projectImageUpload = createUploader({
+  subfolder: 'project-images',
+  filePrefix: 'project-img',
+  maxSize: 10,
+  allowedTypes: ['image/jpeg', 'image/png', 'image/webp']
+});
+
+export const projectVideoUpload = createUploader({
+  subfolder: 'project-videos',
+  filePrefix: 'project-video',
+  maxSize: 100, // 100 MB max
+  allowedTypes: ['video/mp4', 'video/webm']
+});
+
 
 // Generic single file upload middleware
 export const uploadFile = (options) => createUploader(options).single('file');
