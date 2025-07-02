@@ -9,6 +9,7 @@ import projectVideo3 from "../assets/project-1751351933840-532642380.mp4";
 import constructionImage3 from "../assets/constrcution3.jpg";
 import constructionImage2 from "../assets/constrcution2.jpg";
 import constructionImage1 from "../assets/construction1.webp";
+import Footer from "../Components/Footer";
 
 const AboutUs = () => {
   // Main states
@@ -712,25 +713,7 @@ const AboutUs = () => {
       </div>
 
       {/* Bottom decorative section */}
-      <div className="bg-stone-800 py-16 border-t border-stone-700">
-        <div className="max-w-4xl mx-auto text-center px-4">
-          <h3 className="text-4xl font-bold text-white mb-6">
-            Experience the Perfect Cup
-          </h3>
-          <p className="text-stone-300 text-lg mb-8 max-w-2xl mx-auto">
-            Join us in our coffee journey and discover why we've been the
-            preferred choice for coffee lovers for over 70 years.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-amber-500 text-stone-900 px-8 py-3 rounded-lg hover:bg-amber-600 transition-colors duration-300 font-medium">
-              Visit Our Store
-            </button>
-            <button className="border-2 border-white text-white px-8 py-3 rounded-lg hover:bg-white hover:text-stone-900 transition-colors duration-300 font-medium">
-              View Our Menu
-            </button>
-          </div>
-        </div>
-      </div>
+      <Footer/>
     </div>
   );
 };
