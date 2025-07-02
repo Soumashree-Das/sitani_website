@@ -64,8 +64,9 @@ import path from "path";
 import { fileURLToPath } from 'url';
 
 // Get __dirname equivalent for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 //routes imported
 import authRouter from "./src/routes/auth.router.js";
@@ -107,5 +108,4 @@ const PORT = process.env.PORT||8000;
 app.listen(PORT,async ()=>{
     await connectDB();
     console.log(`🚀 Server running: http://localhost:${PORT}/api/v1`);
-    console.log(`📁 Static files served from: http://localhost:${PORT}/uploads`);
 })

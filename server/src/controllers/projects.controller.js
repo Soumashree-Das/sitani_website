@@ -519,3 +519,55 @@ export const toggleProjectFeatured = async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 };
+
+// Serve actual image file
+export const serveProjectImage = (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, '..', 'uploads', 'project-media', filename);
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ success: false, error: 'Image not found' });
+  }
+
+  res.sendFile(filePath);
+};
+
+// Serve actual video file
+export const serveProjectVideo = (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, '..', 'uploads', 'project-media', filename);
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ success: false, error: 'Video not found' });
+  }
+
+  const stat = fs.statSync(filePath);
+  const fileSize = stat.size;
+  const range = req.headers.range;
+
+  if (range) {
+    // Stream partial content for video
+    const parts = range.replace(/bytes=/, "").split("-");
+    const start = parseInt(parts[0], 10);
+    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+    const chunkSize = end - start + 1;
+    const file = fs.createReadStream(filePath, { start, end });
+
+    res.writeHead(206, {
+      "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+      "Accept-Ranges": "bytes",
+      "Content-Length": chunkSize,
+      "Content-Type": "video/mp4",
+    });
+
+    file.pipe(res);
+  } else {
+    // Send entire video
+    res.writeHead(200, {
+      "Content-Length": fileSize,
+      "Content-Type": "video/mp4",
+    });
+
+    fs.createReadStream(filePath).pipe(res);
+  }
+};

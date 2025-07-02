@@ -308,6 +308,7 @@
 // };
 
 // export default Projects;
+
 import React, { useState, useEffect } from "react";
 import {
   ChevronLeft,
@@ -402,30 +403,54 @@ const Projects = () => {
     fetchProjects();
   }, []);
 
-  // Fetch project media (images and videos)
-  const fetchProjectMedia = async (projectId) => {
-    try {
-      setMediaLoading(true);
+  const extractFilename = (path) => {
+  return path.split("/").pop(); // Extracts filename from path
+};
 
-      const [imagesResponse, videosResponse] = await Promise.all([
-        fetch(`http://localhost:8090/api/v1/projects/${projectId}/images`),
-        fetch(`http://localhost:8090/api/v1/projects/${projectId}/videos`),
-      ]);
+const fetchProjectMedia = async (projectId) => {
+  try {
+    setMediaLoading(true);
 
-      const imagesData = await imagesResponse.json();
-      const videosData = await videosResponse.json();
+    const [imagesResponse, videosResponse] = await Promise.all([
+      fetch(`http://localhost:8090/api/v1/projects/${projectId}/images`),
+      fetch(`http://localhost:8090/api/v1/projects/${projectId}/videos`),
+    ]);
 
-      setProjectMedia({
-        images: imagesData.success ? imagesData.images : [],
-        videos: videosData.success ? videosData.videos : [],
-      });
-    } catch (err) {
-      console.error("Error fetching project media:", err);
-      setProjectMedia({ images: [], videos: [] });
-    } finally {
-      setMediaLoading(false);
-    }
-  };
+    const imagesData = await imagesResponse.json();
+    const videosData = await videosResponse.json();
+
+    console.log("imagesData", imagesData);
+    console.log("videosData", videosData);
+
+    const imageURLs = imagesData.success
+      ? imagesData.images.map((path) => {
+          const filename = extractFilename(path);
+          return `http://localhost:8090/api/v1/projects/media/image/${filename}`;
+        })
+      : [];
+
+    const videoURLs = videosData.success
+      ? videosData.videos.map((path) => {
+          const filename = extractFilename(path);
+          return `http://localhost:8090/api/v1/projects/media/video/${filename}`;
+        })
+      : [];
+
+    console.log("imageURLs", imageURLs);
+    console.log("videoURLs", videoURLs);
+
+    setProjectMedia({
+      images: imageURLs,
+      videos: videoURLs,
+    });
+  } catch (err) {
+    console.error("Error fetching project media:", err);
+    setProjectMedia({ images: [], videos: [] });
+  } finally {
+    setMediaLoading(false);
+  }
+};
+
 
   // Handle Learn More button click
   const handleLearnMore = async (project) => {
@@ -465,6 +490,7 @@ const Projects = () => {
     const allMedia = [...projectMedia.images, ...projectMedia.videos];
     return allMedia[currentMediaIndex];
   };
+  console.log("current media", getCurrentMedia());
 
   // Check if current media is video
   const isCurrentMediaVideo = () => {
@@ -686,7 +712,6 @@ const Projects = () => {
             </div>
 
             {/* Modal Content */}
-            {/* Modal Content */}
             <div className="p-6 overflow-y-auto">
               {/* Media Slider */}
               {mediaLoading ? (
@@ -700,16 +725,16 @@ const Projects = () => {
                     <div className="relative h-96 bg-stone-800 rounded-lg overflow-hidden">
                       {isCurrentMediaVideo() ? (
                         <video
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                           controls
-                          src={`http://localhost:8090${getCurrentMedia()}`}
+                          src={getCurrentMedia()}
                           onPlay={() => setIsVideoPlaying(true)}
                           onPause={() => setIsVideoPlaying(false)}
                         />
                       ) : (
                         <img
-                          className="w-full h-full object-cover"
-                          src={`http://localhost:8090${getCurrentMedia()}`}
+                          className="w-full h-full object-contain"
+                          src={getCurrentMedia()}
                           alt={`${selectedProject.name} media`}
                         />
                       )}
@@ -769,7 +794,7 @@ const Projects = () => {
                               </div>
                             ) : (
                               <img
-                                src={`http://localhost:8090${media}`}
+                                src={media}
                                 alt={`Thumbnail ${index + 1}`}
                                 className="w-full h-full object-cover"
                               />

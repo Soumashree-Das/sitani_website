@@ -16,7 +16,9 @@ import {
   updateProject,
   getFeaturedProjects,
   getProjectImages,
-  getProjectVideos
+  getProjectVideos,
+  serveProjectImage,
+  serveProjectVideo
 } from '../controllers/projects.controller.js';
 import multer from 'multer';
 import { createUploader } from '../middlewares/fileUpload.middleware.js';
@@ -50,5 +52,7 @@ router.put('/update/:id', projectMediaUpload.fields([
 
   router.get('/:id/images', getProjectImages);
 router.get('/:id/videos', getProjectVideos);
+router.get("/media/image/:filename", serveProjectImage);
+router.get("/media/video/:filename", serveProjectVideo);
 
 export default router;

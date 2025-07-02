@@ -185,7 +185,6 @@ import constructionImage2 from "../assets/constrcution2.jpg";
 import constructionImage1 from "../assets/construction1.webp";
 
 const Home = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -234,9 +233,6 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-stone-900 text-white">
       {/* Navigation - Keep exactly as is */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-stone-900/95 backdrop-blur-sm border-b border-stone-700">
-        {/* ... (keep all navigation code exactly as before) ... */}
-      </nav>
 
       {/* Hero Section - Now with text content above background */}
       <section
