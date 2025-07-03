@@ -401,3 +401,48 @@ export const logout = async (req, res) => {
         });
     }
 };
+
+// // Verify authentication status
+// export const verifyAuth = async (req, res) => {
+//   try {
+//     // The auth middleware will have already verified the token
+//     // If we get here, the user is authenticated
+//     return res.json({ isAuthenticated: true });
+//   } catch (error) {
+//     return res.json({ isAuthenticated: false });
+//   }
+// };
+
+// In your auth controller
+export const verifyAuth = async (req, res) => {
+  try {
+    // Verify access token from cookies
+    const accessToken = req.cookies.accessToken;
+    if (!accessToken) {
+      return res.json({ isAuthenticated: false });
+    }
+
+    const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN);
+    const user = await User.findById(decoded.id);
+    
+    if (!user) {
+      return res.json({ isAuthenticated: false });
+    }
+
+    // Additional checks (optional)
+    if (user.refreshToken !== req.cookies.refreshToken) {
+      return res.json({ isAuthenticated: false });
+    }
+
+    return res.json({ 
+      isAuthenticated: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email
+      }
+    });
+  } catch (error) {
+    return res.json({ isAuthenticated: false });
+  }
+};

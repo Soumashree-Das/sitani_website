@@ -53,3 +53,31 @@ export const deleteAnnouncement = async (req, res) => {
     });
   }
 };
+
+export const updateAnnouncement = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updatedAnnouncement = await Announcement.findByIdAndUpdate(
+      id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    
+    if (!updatedAnnouncement) {
+      return res.status(404).json({
+        success: false,
+        error: 'Announcement not found'
+      });
+    }
+    
+    res.json({
+      success: true,
+      data: updatedAnnouncement
+    });
+  } catch (err) {
+    res.status(400).json({
+      success: false,
+      error: err.message
+    });
+  }
+};

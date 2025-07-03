@@ -177,3 +177,14 @@ export const getImage = (req, res) => {
     });
   }
 };
+
+import { CompanyHistory } from "../models/companyInfo.model.js";
+
+export const getCompanyHistory = async (req, res) => {
+  try {
+    const history = await CompanyHistory.find().sort({ year: 1 });
+    res.json({ success: true, data: history });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};

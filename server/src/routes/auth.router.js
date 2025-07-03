@@ -18,7 +18,8 @@ import {
     logout,
     uploadProfilePicture,
     updateProfilePicture,
-    removeProfilePicture
+    removeProfilePicture,
+    verifyAuth
 } from "../controllers/auth.controller.js";
 
 const router = express.Router();
@@ -41,5 +42,6 @@ router.put("/profile-picture", uploadProfilePicture, updateProfilePicture);
 // Remove profile picture
 router.delete("/profile-picture", removeProfilePicture);
 
+router.get('/verify', verifyAuth); // Add this to your auth routes
 
 export default router;

@@ -1,26 +1,4 @@
-// import express from 'express';
-// import {
-//     createService,
-//     getAllServices,
-//     getServiceById,
-//     updateService,
-//     deleteService,
-//     processServiceForm
-//     // getActiveServices,
-//     // getServiceStats
-// } from '../controllers/services.controller.js';
-// import multer from "multer";
 
-// const router = express.Router();
-
-// router.post('/create',processServiceForm,createService);                // Create new service
-// router.get('/', getAllServices);                      // Get all services with filters
-// router.get('/:id', getServiceById);                   // Get single service by ID
-// router.put('/:id', updateService);                     // Update service
-// router.delete('/:id', deleteService);                 // Delete service
-//           // Get service statistics
-
-// export default router;
 import express from 'express';
 import {
     createService,

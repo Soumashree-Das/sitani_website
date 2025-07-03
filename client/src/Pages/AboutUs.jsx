@@ -329,9 +329,7 @@ const AboutUs = () => {
                   </>
                 )}
               </div>
-              <button className="bg-amber-500 text-stone-900 px-8 py-3 rounded-none hover:bg-amber-600 transition-colors duration-300 font-medium">
-                Learn More
-              </button>
+              
             </div>
 
             {/* Company Image */}
@@ -405,68 +403,6 @@ const AboutUs = () => {
                   </p>
                 )}
               </div>
-
-              {/* Vision Points */}
-              <div className="space-y-4 mt-8">
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <svg
-                      className="w-3 h-3 text-stone-900"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-stone-600 font-medium">
-                    Premium Quality Construction
-                  </span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <svg
-                      className="w-3 h-3 text-stone-900"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-stone-600 font-medium">
-                    Sustainable Building Practices
-                  </span>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center flex-shrink-0 mt-1">
-                    <svg
-                      className="w-3 h-3 text-stone-900"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <span className="text-stone-600 font-medium">
-                    Community-Focused Approach
-                  </span>
-                </div>
-              </div>
-
-              <button className="bg-amber-500 text-stone-900 px-8 py-3 rounded-none hover:bg-amber-600 transition-colors duration-300 font-medium">
-                Learn More
-              </button>
             </div>
 
             {/* Location Info */}

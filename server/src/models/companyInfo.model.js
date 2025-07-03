@@ -78,5 +78,23 @@ companyInfoSchema.index({ 'aboutUs.sections.section': 1 });
 companyInfoSchema.index({ 'contactInfo.departments.department': 1 });
 
 const CompanyInfo = mongoose.model('CompanyInfo', companyInfoSchema);
+const companyHistorySchema = new mongoose.Schema({
+  year: {
+    type: Number,
+    required: true
+  },
+  event: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  }
+}, { timestamps: true });
 
+export const CompanyHistory = mongoose.model('CompanyHistory', companyHistorySchema);
 export default CompanyInfo;

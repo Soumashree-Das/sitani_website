@@ -1,14 +1,4 @@
-// import express, { Router } from "express";
-// import { createProject,getAllProjects,getFeaturedProjects, updateProject } from "../controllers/projects.controller.js";  
 
-// const router = Router();
-
-// router.post("/createEntryForProject",createProject);//http://localhost:8090/api/v1/projects/createEntryForProject
-// router.get("/getfeatured",getFeaturedProjects);//http://localhost:8090/api/v1/projects/getfeatured
-// router.patch("/update/:id",updateProject);//http://localhost:8090/api/v1/projects/update/:id
-// router.get('/getall', getAllProjects);//http://localhost:8090/api/v1/projects/getAll
-
-// export default router;
 import express from 'express';
 import {
   createProject,
@@ -18,7 +8,8 @@ import {
   getProjectImages,
   getProjectVideos,
   serveProjectImage,
-  serveProjectVideo
+  serveProjectVideo,
+  deleteProject
 } from '../controllers/projects.controller.js';
 import multer from 'multer';
 import { createUploader } from '../middlewares/fileUpload.middleware.js';
@@ -49,8 +40,8 @@ router.put('/update/:id', projectMediaUpload.fields([
     { name: 'images', maxCount: 5 },
     { name: 'videos', maxCount: 2 }
   ]),updateProject);
-
-  router.get('/:id/images', getProjectImages);
+router.delete("/delete/:id",deleteProject);
+router.get('/:id/images', getProjectImages);
 router.get('/:id/videos', getProjectVideos);
 router.get("/media/image/:filename", serveProjectImage);
 router.get("/media/video/:filename", serveProjectVideo);
