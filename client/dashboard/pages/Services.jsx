@@ -211,15 +211,6 @@ const ServicesDashboard = () => {
                 </label>
               </div>
 
-              <div>
-                <label className="block mb-2 font-semibold text-stone-900">Service Image</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setImageFile(e.target.files[0])}
-                  className="w-full p-2 border border-stone-700 rounded bg-transparent"
-                />
-              </div>
 
               <div className="flex gap-2">
                 <button

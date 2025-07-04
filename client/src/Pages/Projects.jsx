@@ -1,5 +1,10 @@
-
-import Footer from '../Components/Footer.jsx';
+import projectBg from "../assets/project_bg.avif";
+import Footer from "../Components/Footer.jsx";
+import constructionImage1 from "../assets/constructionImage1.jpeg";
+import constructionImage2 from "../assets/constructionImage2.jpeg";
+import constructionImage3 from "../assets/constructionImage3.jpeg";
+import constructionImage4 from "../assets/constructionImage4.jpeg";
+import constructionImage5 from "../assets/constructionImage5.jpeg";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -96,53 +101,52 @@ const Projects = () => {
   }, []);
 
   const extractFilename = (path) => {
-  return path.split("/").pop(); // Extracts filename from path
-};
+    return path.split("/").pop(); // Extracts filename from path
+  };
 
-const fetchProjectMedia = async (projectId) => {
-  try {
-    setMediaLoading(true);
+  const fetchProjectMedia = async (projectId) => {
+    try {
+      setMediaLoading(true);
 
-    const [imagesResponse, videosResponse] = await Promise.all([
-      fetch(`http://localhost:8090/api/v1/projects/${projectId}/images`),
-      fetch(`http://localhost:8090/api/v1/projects/${projectId}/videos`),
-    ]);
+      const [imagesResponse, videosResponse] = await Promise.all([
+        fetch(`http://localhost:8090/api/v1/projects/${projectId}/images`),
+        fetch(`http://localhost:8090/api/v1/projects/${projectId}/videos`),
+      ]);
 
-    const imagesData = await imagesResponse.json();
-    const videosData = await videosResponse.json();
+      const imagesData = await imagesResponse.json();
+      const videosData = await videosResponse.json();
 
-    console.log("imagesData", imagesData);
-    console.log("videosData", videosData);
+      console.log("imagesData", imagesData);
+      console.log("videosData", videosData);
 
-    const imageURLs = imagesData.success
-      ? imagesData.images.map((path) => {
-          const filename = extractFilename(path);
-          return `http://localhost:8090/api/v1/projects/media/image/${filename}`;
-        })
-      : [];
+      const imageURLs = imagesData.success
+        ? imagesData.images.map((path) => {
+            const filename = extractFilename(path);
+            return `http://localhost:8090/api/v1/projects/media/image/${filename}`;
+          })
+        : [];
 
-    const videoURLs = videosData.success
-      ? videosData.videos.map((path) => {
-          const filename = extractFilename(path);
-          return `http://localhost:8090/api/v1/projects/media/video/${filename}`;
-        })
-      : [];
+      const videoURLs = videosData.success
+        ? videosData.videos.map((path) => {
+            const filename = extractFilename(path);
+            return `http://localhost:8090/api/v1/projects/media/video/${filename}`;
+          })
+        : [];
 
-    console.log("imageURLs", imageURLs);
-    console.log("videoURLs", videoURLs);
+      console.log("imageURLs", imageURLs);
+      console.log("videoURLs", videoURLs);
 
-    setProjectMedia({
-      images: imageURLs,
-      videos: videoURLs,
-    });
-  } catch (err) {
-    console.error("Error fetching project media:", err);
-    setProjectMedia({ images: [], videos: [] });
-  } finally {
-    setMediaLoading(false);
-  }
-};
-
+      setProjectMedia({
+        images: imageURLs,
+        videos: videoURLs,
+      });
+    } catch (err) {
+      console.error("Error fetching project media:", err);
+      setProjectMedia({ images: [], videos: [] });
+    } finally {
+      setMediaLoading(false);
+    }
+  };
 
   // Handle Learn More button click
   const handleLearnMore = async (project) => {
@@ -193,12 +197,11 @@ const fetchProjectMedia = async (projectId) => {
   // Static images for project cards
   const getProjectImage = (projectName, index) => {
     const images = [
-      "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      "https://images.unsplash.com/photo-1565008447742-97f6f38c985c?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      "https://images.unsplash.com/photo-1441986300917-64674bd600d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      "https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      constructionImage1,
+      constructionImage2,
+      constructionImage3,
+      constructionImage4,
+      constructionImage5,
     ];
     return images[index % images.length];
   };
@@ -245,7 +248,7 @@ const fetchProjectMedia = async (projectId) => {
       <div
         className="relative h-96 bg-cover bg-center bg-fixed"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')`,
+          backgroundImage: `url(${projectBg})`,
         }}
       >
         <div className="absolute inset-0 bg-stone-900/85"></div>
@@ -556,7 +559,7 @@ const fetchProjectMedia = async (projectId) => {
           </div>
         </div>
       )}
-      <Footer/>
+      <Footer />
       {/* Error Display */}
       {error && (
         <div className="fixed bottom-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg">

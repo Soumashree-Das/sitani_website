@@ -18,7 +18,7 @@ export const createService = async (req, res) => {
         featured
       } = req.body;
 
-      console.log(req.body);
+      // console.log(req.body);
 
       if (!heading) {
         return res.status(400).json({ 
