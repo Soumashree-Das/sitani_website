@@ -12,20 +12,20 @@
 
 import express from "express";
 import {
-    register,
+    // register,
     login,
     refreshToken,
     logout,
-    uploadProfilePicture,
-    updateProfilePicture,
-    removeProfilePicture,
+    // uploadProfilePicture,
+    // updateProfilePicture,
+    // removeProfilePicture,
     verifyAuth
 } from "../controllers/auth.controller.js";
 
 const router = express.Router();
 
 // Registration with optional profile picture
-router.post("/register", uploadProfilePicture, register);
+// router.post("/register", uploadProfilePicture, register);
 
 // Login
 router.post("/login", login);
@@ -37,10 +37,10 @@ router.post("/refresh-token", refreshToken);
 router.post("/logout", logout);
 
 // Update profile picture
-router.put("/profile-picture", uploadProfilePicture, updateProfilePicture);
+// router.put("/profile-picture", uploadProfilePicture, updateProfilePicture);
 
 // Remove profile picture
-router.delete("/profile-picture", removeProfilePicture);
+// router.delete("/profile-picture", removeProfilePicture);
 
 router.get('/verify', verifyAuth); // Add this to your auth routes
 

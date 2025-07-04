@@ -109,7 +109,7 @@ const ServicesDashboard = () => {
 
   return (
     
-    <div className="p-6 max-w-7xl mx-auto my-12 bg-[#FBFFF1]">
+    <div className="p-6 max-w-7xl mx-auto mt-12 bg-[#FBFFF1]">
      
       <a href="/admin">
       <button className="bg-amber-500 hover:bg-amber-600 text-stone-900 font-medium py-2 px-4 rounded-md transition-colors duration-200">

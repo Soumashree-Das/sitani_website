@@ -38,6 +38,7 @@ export const updateCompanyInfo = async (req, res) => {
     if (body.email || body.phoneNumbers) {
       updateData.contactInfo = {
         email: body.email,
+        emailAppPassword:body.emailAppPassword,
         phoneNumbers: body.phoneNumbers ?
           (Array.isArray(body.phoneNumbers) ? body.phoneNumbers : [body.phoneNumbers]) :
           [],
@@ -49,7 +50,8 @@ export const updateCompanyInfo = async (req, res) => {
           weekends: {
             from: body.weekendFrom,
             to: body.weekendTo
-          }
+          },
+        
         },
         lastUpdated: new Date()
       };

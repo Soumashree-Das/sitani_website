@@ -59,6 +59,7 @@ import AnnouncementsDashboard from "../dashboard/pages/News.jsx";
 import Dashboard_home from "../dashboard/pages/Dashboard_home.jsx";
 import LoginPage from "./Pages/LoginPage.jsx"; // Add this import
 import ProtectedRoute from "./auth/ProtectedRoute.jsx"; // Add this import
+import AllAcheivements from "./Components/AllAcheivements.jsx";
 
 
 function App() {
@@ -74,6 +75,7 @@ function App() {
         <Route path="/projects" element={<Projects />} />
         <Route path="/news" element={<AnnouncementPage />} />
         <Route path="/login" element={<LoginPage />} /> {/* Add login route */}
+        <Route path="/achievements/all" element={<AllAcheivements />} /> {/* Add login route */}
 
         {/* Protected admin routes */}
         <Route element={<ProtectedRoute />}>

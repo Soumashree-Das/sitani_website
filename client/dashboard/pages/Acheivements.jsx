@@ -1,676 +1,358 @@
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { Plus, X, Edit, Trash2, Star } from "lucide-react";
 
-// const acheivementsDashboard = () => {
-//   const [acheivements, setacheivements] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [newacheivement, setNewacheivement] = useState({
-//     title: '',
-//     description: '',
-//     category: '',
-//     featured: false,
-//     tags: '',
-//     dateAchieved: '',
-//     image: null
-//   });
-//   const [editingId, setEditingId] = useState(null);
-//   const [showAddForm, setShowAddForm] = useState(false);
-
-//   useEffect(() => {
-//     fetchacheivements();
-//   }, []);
-
-//   const fetchacheivements = async () => {
-//     try {
-//       const response = await axios.get('http://localhost:8090/api/v1/acheivements');
-//       setacheivements(response.data.data);
-//       setLoading(false);
-//     } catch (err) {
-//       setError(err.message);
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleInputChange = (e) => {
-//     const { name, value, type, checked } = e.target;
-//     setNewacheivement({
-//       ...newacheivement,
-//       [name]: type === 'checkbox' ? checked : value
-//     });
-//   };
-
-//   const handleFileChange = (e) => {
-//     setNewacheivement({
-//       ...newacheivement,
-//       image: e.target.files[0]
-//     });
-//   };
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const formData = new FormData();
-//       Object.entries(newacheivement).forEach(([key, value]) => {
-//         if (value !== null && value !== undefined) {
-//           formData.append(key, value);
-//         }
-//       });
-
-//       if (editingId) {
-//         // Update existing acheivement
-//         await axios.put(`http://localhost:8090/api/v1/acheivements/${editingId}`, formData, {
-//           headers: {
-//             'Content-Type': 'multipart/form-data'
-//           }
-//         });
-//       } else {
-//         // Create new acheivement
-//         await axios.post('http://localhost:8090/api/v1/acheivements', formData, {
-//           headers: {
-//             'Content-Type': 'multipart/form-data'
-//           }
-//         });
-//       }
-      
-//       fetchacheivements();
-//       setShowAddForm(false);
-//       setEditingId(null);
-//       setNewacheivement({
-//         title: '',
-//         description: '',
-//         category: '',
-//         featured: false,
-//         tags: '',
-//         dateAchieved: '',
-//         image: null
-//       });
-//     } catch (err) {
-//       setError(err.message);
-//     }
-//   };
-
-//   const handleEdit = (acheivement) => {
-//     setEditingId(acheivement._id);
-//     setNewacheivement({
-//       title: acheivement.title,
-//       description: acheivement.description,
-//       category: acheivement.category,
-//       featured: acheivement.featured,
-//       tags: acheivement.tags?.join(', '),
-//       dateAchieved: new Date(acheivement.dateAchieved).toISOString().split('T')[0],
-//       image: null
-//     });
-//     setShowAddForm(true);
-//     useNavigate('/admin/acheivements');
-//   };
-
-//   const handleDelete = async (id) => {
-//     if (window.confirm('Are you sure you want to delete this acheivement?')) {
-//       try {
-//         await axios.delete(`http://localhost:8090/api/v1/acheivements/${id}`);
-//         fetchacheivements();
-//       } catch (err) {
-//         setError(err.message);
-//       }
-//     }
-//   };
-
-//   const cancelEdit = () => {
-//     setShowAddForm(false);
-//     setEditingId(null);
-//     setNewacheivement({
-//       title: '',
-//       description: '',
-//       category: '',
-//       featured: false,
-//       tags: '',
-//       dateAchieved: '',
-//       image: null
-//     });
-//   };
-
-//   if (loading) return <div>Loading...</div>;
-//   if (error) return <div>Error: {error}</div>;
-
-//   return (
-//     <div className="container mx-auto px-4 py-8">
-      
-//       <a href="/admin">
-//       <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors duration-200">
-//         Dashboard
-//       </button>
-//     </a>
-//       <h1 className="text-3xl font-bold mb-8">acheivements Dashboard</h1>
-      
-//       <button 
-//         onClick={() => {
-//           setShowAddForm(!showAddForm);
-//           if (showAddForm) cancelEdit();
-//         }}
-//         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6"
-//       >
-//         {showAddForm ? 'Cancel' : 'Add New acheivement'}
-//       </button>
-
-//       {showAddForm && (
-//         <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-//           <h2 className="text-xl font-semibold mb-4">
-//             {editingId ? 'Edit acheivement' : 'Add New acheivement'}
-//           </h2>
-//           <form onSubmit={handleSubmit}>
-//             <div className="mb-4">
-//               <label className="block text-gray-700 mb-2">acheivement Title</label>
-//               <input
-//                 type="text"
-//                 name="title"
-//                 value={newacheivement.title}
-//                 onChange={handleInputChange}
-//                 className="w-full px-3 py-2 border rounded"
-//                 required
-//               />
-//             </div>
-            
-//             <div className="mb-4">
-//               <label className="block text-gray-700 mb-2">Description</label>
-//               <textarea
-//                 name="description"
-//                 value={newacheivement.description}
-//                 onChange={handleInputChange}
-//                 className="w-full px-3 py-2 border rounded"
-//                 required
-//               />
-//             </div>
-            
-//             <div className="mb-4">
-//               <label className="block text-gray-700 mb-2">Category</label>
-//               <select
-//                 name="category"
-//                 value={newacheivement.category}
-//                 onChange={handleInputChange}
-//                 className="w-full px-3 py-2 border rounded"
-//                 required
-//               >
-//                 <option value="">Select a category</option>
-//                 <option value="award">Award</option>
-//                 <option value="milestone">Milestone</option>
-//                 <option value="certification">Certification</option>
-//                 <option value="other">Other</option>
-//               </select>
-//             </div>
-            
-//             <div className="mb-4">
-//               <label className="block text-gray-700 mb-2">Date Achieved</label>
-//               <input
-//                 type="date"
-//                 name="dateAchieved"
-//                 value={newacheivement.dateAchieved}
-//                 onChange={handleInputChange}
-//                 className="w-full px-3 py-2 border rounded"
-//                 required
-//               />
-//             </div>
-            
-//             <div className="mb-4">
-//               <label className="block text-gray-700 mb-2">Tags (comma separated)</label>
-//               <input
-//                 type="text"
-//                 name="tags"
-//                 value={newacheivement.tags}
-//                 onChange={handleInputChange}
-//                 className="w-full px-3 py-2 border rounded"
-//                 placeholder="e.g., web,design,responsive"
-//               />
-//             </div>
-            
-//             <div className="mb-4">
-//               <label className="block text-gray-700 mb-2">Featured</label>
-//               <input
-//                 type="checkbox"
-//                 name="featured"
-//                 checked={newacheivement.featured}
-//                 onChange={handleInputChange}
-//                 className="mr-2"
-//               />
-//               <span>Mark as featured</span>
-//             </div>
-            
-//             <div className="mb-4">
-//               <label className="block text-gray-700 mb-2">acheivement Image</label>
-//               <input
-//                 type="file"
-//                 name="image"
-//                 onChange={handleFileChange}
-//                 className="w-full px-3 py-2 border rounded"
-//               />
-//               {editingId && (
-//                 <p className="text-sm text-gray-500 mt-1">
-//                   Leave empty to keep current image
-//                 </p>
-//               )}
-//             </div>
-            
-//             <div className="flex gap-2">
-//               <button
-//                 type="submit"
-//                 className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-//               >
-//                 {editingId ? 'Update acheivement' : 'Save acheivement'}
-//               </button>
-//               {editingId && (
-//                 <button
-//                   type="button"
-//                   onClick={cancelEdit}
-//                   className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-//                 >
-//                   Cancel
-//                 </button>
-//               )}
-//             </div>
-//           </form>
-//         </div>
-//       )}
-
-//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-//         {acheivements.map((acheivement) => (
-//           <div key={acheivement._id} className="bg-white p-6 rounded-lg shadow-md relative">
-//             <div className="flex justify-between items-start mb-4">
-//               <h3 className="text-xl font-semibold">{acheivement.title}</h3>
-//               {acheivement.featured && (
-//                 <span className="bg-yellow-100 text-yellow-800 text-xs font-medium px-2.5 py-0.5 rounded">
-//                   Featured
-//                 </span>
-//               )}
-//             </div>
-//             <p className="text-gray-600 mb-4">{acheivement.description}</p>
-            
-//             <div className="flex flex-wrap gap-2 mb-4">
-//               {acheivement.tags?.map((tag) => (
-//                 <span key={tag} className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
-//                   {tag}
-//                 </span>
-//               ))}
-//             </div>
-            
-//             <div className="text-sm text-gray-500 mb-2">
-//               <span className="font-medium">Category:</span> {acheivement.category}
-//             </div>
-//             <div className="text-sm text-gray-500 mb-4">
-//               <span className="font-medium">Date:</span> {new Date(acheivement.dateAchieved).toLocaleDateString()}
-//             </div>
-            
-//             {acheivement.imageUrl && (
-//               <div className="mb-4">
-//                 <img 
-//                   src={acheivement.imageUrl} 
-//                   alt={acheivement.title}
-//                   className="w-full h-auto rounded"
-//                 />
-//               </div>
-//             )}
-            
-//             <div className="flex justify-end gap-2 mt-4">
-//               <button
-//                 onClick={() => handleEdit(acheivement)}
-//                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm"
-//               >
-//                 Edit
-//               </button>
-//               <button
-//                 onClick={() => handleDelete(acheivement._id)}
-//                 className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm"
-//               >
-//                 Delete
-//               </button>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default acheivementsDashboard;
-
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import LeftSideNavbar from '../components/LeftSideNavbar';
-
-const AchievementsDashboard = () => {
-  const [achievements, setAchievements] = useState([]);
+const AcheivementsDashboard = () => {
+  const [acheivements, setAcheivements] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [newAchievement, setNewAchievement] = useState({
+  const [showForm, setShowForm] = useState(false);
+  const [editingAcheivement, setEditingAcheivement] = useState(null);
+
+  const [formData, setFormData] = useState({
     title: '',
     description: '',
-    category: '',
+    category: 'award',
+    dateAcheived: new Date().toISOString().split('T')[0],
     featured: false,
-    tags: '',
-    dateAchieved: '',
-    image: null
+    tags: ''
   });
-  const [editingId, setEditingId] = useState(null);
-  const [showAddForm, setShowAddForm] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchAchievements();
+    fetchAcheivements();
   }, []);
 
-  const fetchAchievements = async () => {
+  const fetchAcheivements = async () => {
     try {
-      const response = await axios.get('http://localhost:8090/api/v1/achievements');
-      setAchievements(response.data.data);
-      setLoading(false);
+      const response = await fetch("http://localhost:8090/api/v1/acheivements");
+      if (!response.ok) throw new Error("Failed to fetch acheivements");
+      const data = await response.json();
+      setAcheivements(Array.isArray(data) ? data : data.data || []);
     } catch (err) {
       setError(err.message);
+    } finally {
       setLoading(false);
     }
   };
 
-  const handleInputChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setNewAchievement({
-      ...newAchievement,
-      [name]: type === 'checkbox' ? checked : value
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      description: "",
+      category: "award",
+      dateAcheived: new Date().toISOString().split("T")[0],
+      featured: false,
+      tags: "",
     });
+    setEditingAcheivement(null);
+    setShowForm(false);
   };
 
-  const handleFileChange = (e) => {
-    setNewAchievement({
-      ...newAchievement,
-      image: e.target.files[0]
+  const handleEdit = (acheivement) => {
+    // Safe handling of dateAcheived
+    let formattedDate = new Date().toISOString().split('T')[0]; // Default to today
+    if (acheivement.dateAcheived) {
+      try {
+        // Handle both string and Date object formats
+        const dateStr = typeof acheivement.dateAcheived === 'string' 
+          ? acheivement.dateAcheived 
+          : acheivement.dateAcheived.toISOString();
+        formattedDate = dateStr.split('T')[0];
+      } catch (error) {
+        console.warn('Invalid date format:', acheivement.dateAcheived);
+      }
+    }
+
+    setFormData({
+      title: acheivement.title || '',
+      description: acheivement.description || '',
+      category: acheivement.category || 'award',
+      dateAcheived: formattedDate,
+      featured: acheivement.featured || false,
+      tags: acheivement.tags ? acheivement.tags.join(', ') : ''
     });
+    setEditingAcheivement(acheivement);
+    setShowForm(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this acheivement?"))
+      return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8090/api/v1/acheivements/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+      if (!response.ok) throw new Error("Failed to delete acheivement");
+      fetchAcheivements();
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      Object.entries(newAchievement).forEach(([key, value]) => {
-        if (value !== null && value !== undefined) {
-          formData.append(key, value);
-        }
+      const payload = {
+        ...formData,
+        tags: formData.tags
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter((tag) => tag),
+        dateAcheived: new Date(formData.dateAcheived),
+      };
+
+      const url = editingAcheivement
+        ? `http://localhost:8090/api/v1/acheivements/${editingAcheivement._id}`
+        : "http://localhost:8090/api/v1/acheivements";
+
+      const method = editingAcheivement ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
       });
 
-      if (editingId) {
-        await axios.put(`http://localhost:8090/api/v1/achievements/${editingId}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-      } else {
-        await axios.post('http://localhost:8090/api/v1/achievements', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-      }
-      
-      fetchAchievements();
-      setShowAddForm(false);
-      setEditingId(null);
-      setNewAchievement({
-        title: '',
-        description: '',
-        category: '',
-        featured: false,
-        tags: '',
-        dateAchieved: '',
-        image: null
-      });
+      if (!response.ok) throw new Error(response.statusText);
+
+      resetForm();
+      fetchAcheivements();
     } catch (err) {
       setError(err.message);
     }
   };
 
-  const handleEdit = (achievement) => {
-    setEditingId(achievement._id);
-    setNewAchievement({
-      title: achievement.title,
-      description: achievement.description,
-      category: achievement.category,
-      featured: achievement.featured,
-      tags: achievement.tags?.join(', '),
-      dateAchieved: new Date(achievement.dateAchieved).toISOString().split('T')[0],
-      image: null
-    });
-    setShowAddForm(true);
-  };
-
-  const handleDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this achievement?')) {
-      try {
-        await axios.delete(`http://localhost:8090/api/v1/achievements/${id}`);
-        fetchAchievements();
-      } catch (err) {
-        setError(err.message);
-      }
-    }
-  };
-
-  const cancelEdit = () => {
-    setShowAddForm(false);
-    setEditingId(null);
-    setNewAchievement({
-      title: '',
-      description: '',
-      category: '',
-      featured: false,
-      tags: '',
-      dateAchieved: '',
-      image: null
-    });
-  };
-
-  if (loading) return (
-    <div className="flex items-center justify-center h-screen bg-stone-900 text-amber-400">
-      Loading...
-    </div>
-  );
-  
-  if (error) return (
-    <div className="flex items-center justify-center h-screen bg-stone-900 text-red-400">
-      Error: {error}
-    </div>
-  );
+  if (loading)
+    return <div className="text-center py-12">Loading acheivements...</div>;
+  if (error)
+    return <div className="text-center py-12 text-red-500">Error: {error}</div>;
 
   return (
-    <div className="flex min-h-screen bg-stone-900 text-stone-300">
-      <LeftSideNavbar />
-      
-      <div className="flex-1 p-8 ml-64">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-amber-400 mb-6">Achievements Dashboard</h1>
-          
-          <button 
-            onClick={() => {
-              setShowAddForm(!showAddForm);
-              if (showAddForm) cancelEdit();
-            }}
-            className="bg-amber-500 hover:bg-amber-600 text-stone-900 font-bold py-2 px-4 rounded mb-6 transition-colors"
-          >
-            {showAddForm ? 'Cancel' : 'Add New Achievement'}
-          </button>
+    <div className="p-6 max-w-7xl mx-auto bg-[#FBFFF1] rounded-lg shadow-md mt-15">
+      {/* Dashboard Button */}
+    <a href="/admin">
+      <button className="bg-amber-500 hover:bg-amber-600 text-stone-900 font-medium py-2 px-4 rounded-md transition-colors duration-200 mb-4">
+        Dashboard
+      </button>
+    </a>
 
-          {showAddForm && (
-            <div className="bg-stone-800 p-6 rounded-lg shadow-md mb-8 border border-stone-700">
-              <h2 className="text-xl font-semibold mb-4 text-amber-400">
-                {editingId ? 'Edit Achievement' : 'Add New Achievement'}
+      <div className="flex justify-between items-center mb-6">
+        
+        <h1 className="text-3xl font-bold text-stone-900">
+          Acheivements Dashboard
+        </h1>
+        <button
+          onClick={() => setShowForm(true)}
+          className="bg-amber-500 text-stone-900 px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-amber-600 transition-colors"
+        >
+          <Plus size={20} />
+          Add Acheivement
+        </button>
+      </div>
+
+      {showForm && (
+        <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+          
+          <div className="bg-[#FBFFF1] rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-stone-700">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold text-stone-900">
+                {editingAcheivement
+                  ? "Edit Acheivement"
+                  : "Add New Acheivement"}
               </h2>
-              <form onSubmit={handleSubmit}>
-                <div className="mb-4">
-                  <label className="block text-stone-300 mb-2">Achievement Title</label>
-                  <input
-                    type="text"
-                    name="title"
-                    value={newAchievement.title}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-stone-700 rounded bg-stone-900 text-stone-300"
-                    required
-                  />
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block text-stone-300 mb-2">Description</label>
-                  <textarea
-                    name="description"
-                    value={newAchievement.description}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-stone-700 rounded bg-stone-900 text-stone-300"
-                    required
-                  />
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block text-stone-300 mb-2">Category</label>
+              <button
+                onClick={resetForm}
+                className="text-stone-700 hover:text-amber-500"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-stone-700 mb-1">Title*</label>
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({ ...formData, title: e.target.value })
+                  }
+                  className="w-full p-3 border border-stone-300 rounded-lg bg-white"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-stone-700 mb-1">Description</label>
+                <textarea
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                  className="w-full p-3 border border-stone-300 rounded-lg h-24 bg-white"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-stone-700 mb-1">Category*</label>
                   <select
-                    name="category"
-                    value={newAchievement.category}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-stone-700 rounded bg-stone-900 text-stone-300"
+                    value={formData.category}
+                    onChange={(e) =>
+                      setFormData({ ...formData, category: e.target.value })
+                    }
+                    className="w-full p-3 border border-stone-300 rounded-lg bg-white"
                     required
                   >
-                    <option value="">Select a category</option>
                     <option value="award">Award</option>
                     <option value="milestone">Milestone</option>
                     <option value="certification">Certification</option>
                     <option value="other">Other</option>
                   </select>
                 </div>
-                
-                <div className="mb-4">
-                  <label className="block text-stone-300 mb-2">Date Achieved</label>
+
+                <div>
+                  <label className="block text-stone-700 mb-1">
+                    Date Acheived*
+                  </label>
                   <input
                     type="date"
-                    name="dateAchieved"
-                    value={newAchievement.dateAchieved}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-stone-700 rounded bg-stone-900 text-stone-300"
+                    value={formData.dateAcheived}
+                    onChange={(e) =>
+                      setFormData({ ...formData, dateAcheived: e.target.value })
+                    }
+                    className="w-full p-3 border border-stone-300 rounded-lg bg-white"
                     required
                   />
                 </div>
-                
-                <div className="mb-4">
-                  <label className="block text-stone-300 mb-2">Tags (comma separated)</label>
-                  <input
-                    type="text"
-                    name="tags"
-                    value={newAchievement.tags}
-                    onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-stone-700 rounded bg-stone-900 text-stone-300"
-                    placeholder="e.g., web,design,responsive"
-                  />
-                </div>
-                
-                <div className="mb-4 flex items-center">
+              </div>
+
+              <div>
+                <label className="block text-stone-700 mb-1">
+                  Tags (comma separated)
+                </label>
+                <input
+                  type="text"
+                  value={formData.tags}
+                  onChange={(e) =>
+                    setFormData({ ...formData, tags: e.target.value })
+                  }
+                  className="w-full p-3 border border-stone-300 rounded-lg bg-white"
+                  placeholder="e.g., safety, quality, innovation"
+                />
+              </div>
+
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2 text-stone-700">
                   <input
                     type="checkbox"
-                    name="featured"
-                    checked={newAchievement.featured}
-                    onChange={handleInputChange}
-                    className="mr-2 h-5 w-5 text-amber-500 border-stone-700 rounded focus:ring-amber-500 bg-stone-900"
+                    checked={formData.featured}
+                    onChange={(e) =>
+                      setFormData({ ...formData, featured: e.target.checked })
+                    }
+                    className="text-amber-500 rounded"
                   />
-                  <span className="text-stone-300">Mark as featured</span>
-                </div>
-                
-                <div className="mb-4">
-                  <label className="block text-stone-300 mb-2">Achievement Image</label>
-                  <input
-                    type="file"
-                    name="image"
-                    onChange={handleFileChange}
-                    className="w-full px-3 py-2 border border-stone-700 rounded bg-stone-900 text-stone-300"
-                  />
-                  {editingId && (
-                    <p className="text-sm text-stone-500 mt-1">
-                      Leave empty to keep current image
-                    </p>
+                  Featured Acheivement
+                </label>
+              </div>
+
+              <div className="flex gap-2 pt-4">
+                <button
+                  type="submit"
+                  onClick={handleSubmit}
+                  className="bg-amber-500 text-stone-900 px-4 py-2 rounded hover:bg-amber-600 transition-colors"
+                >
+                  {editingAcheivement ? "Update" : "Create"}
+                </button>
+                <button
+                  type="button"
+                  onClick={resetForm}
+                  className="bg-stone-300 text-stone-900 px-4 py-2 rounded hover:bg-stone-400 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="grid gap-4">
+        {acheivements.length === 0 ? (
+          <div className="text-center py-12 text-stone-600">
+            No acheivements found. Add your first acheivement!
+          </div>
+        ) : (
+          acheivements.map((acheivement) => (
+            <div
+              key={acheivement._id}
+              className="border border-stone-300 rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition-shadow"
+            >
+              <div className="flex justify-between items-start">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="text-xl font-semibold text-stone-900">
+                      {acheivement.title}
+                    </h3>
+                    {acheivement.featured && (
+                      <Star className="text-amber-500" size={18} />
+                    )}
+                  </div>
+                  <p className="text-stone-700 mb-2">
+                    {acheivement.description}
+                  </p>
+                  <div className="flex flex-wrap gap-2 text-sm">
+                    <span className="bg-stone-200 text-stone-800 px-2 py-1 rounded-full">
+                      {acheivement.category?.charAt(0).toUpperCase() +
+                        acheivement.category?.slice(1)}
+                    </span>
+                    <span className="text-stone-500">
+                      {acheivement.dateAcheived 
+                        ? new Date(acheivement.dateAcheived).toLocaleDateString()
+                        : 'No date'}
+                    </span>
+                  </div>
+                  {acheivement.tags && acheivement.tags.length > 0 && (
+                    <div className="mt-3 flex flex-wrap gap-1">
+                      {acheivement.tags.map((tag, index) => (
+                        <span
+                          key={index}
+                          className="text-xs bg-stone-100 text-stone-700 px-2 py-1 rounded-full"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   )}
                 </div>
-                
                 <div className="flex gap-2">
                   <button
-                    type="submit"
-                    className="bg-amber-500 hover:bg-amber-600 text-stone-900 font-bold py-2 px-4 rounded transition-colors"
+                    onClick={() => handleEdit(acheivement)}
+                    className="text-amber-500 hover:bg-amber-100 p-2 rounded-full transition-colors"
+                    aria-label="Edit"
                   >
-                    {editingId ? 'Update Achievement' : 'Save Achievement'}
-                  </button>
-                  {editingId && (
-                    <button
-                      type="button"
-                      onClick={cancelEdit}
-                      className="bg-stone-700 hover:bg-stone-600 text-stone-300 font-bold py-2 px-4 rounded transition-colors"
-                    >
-                      Cancel
-                    </button>
-                  )}
-                </div>
-              </form>
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {achievements.map((achievement) => (
-              <div key={achievement._id} className="bg-stone-800 p-6 rounded-lg shadow-md border border-stone-700 relative hover:border-amber-500 transition-colors">
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-semibold text-amber-400">{achievement.title}</h3>
-                  {achievement.featured && (
-                    <span className="bg-amber-500/20 text-amber-400 text-xs font-medium px-2.5 py-0.5 rounded">
-                      Featured
-                    </span>
-                  )}
-                </div>
-                <p className="text-stone-400 mb-4">{achievement.description}</p>
-                
-                <div className="flex flex-wrap gap-2 mb-4">
-                  {achievement.tags?.map((tag) => (
-                    <span key={tag} className="bg-amber-500/20 text-amber-400 text-xs font-medium px-2.5 py-0.5 rounded">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                
-                <div className="text-sm text-stone-500 mb-2">
-                  <span className="font-medium text-stone-400">Category:</span> {achievement.category}
-                </div>
-                <div className="text-sm text-stone-500 mb-4">
-                  <span className="font-medium text-stone-400">Date:</span> {new Date(achievement.dateAchieved).toLocaleDateString()}
-                </div>
-                
-                {achievement.imageUrl && (
-                  <div className="mb-4">
-                    <img 
-                      src={achievement.imageUrl} 
-                      alt={achievement.title}
-                      className="w-full h-auto rounded border border-stone-700"
-                    />
-                  </div>
-                )}
-                
-                <div className="flex justify-end gap-2 mt-4">
-                  <button
-                    onClick={() => handleEdit(achievement)}
-                    className="bg-amber-500 hover:bg-amber-600 text-stone-900 font-bold py-1 px-3 rounded text-sm transition-colors"
-                  >
-                    Edit
+                    <Edit size={18} />
                   </button>
                   <button
-                    onClick={() => handleDelete(achievement._id)}
-                    className="bg-red-500/80 hover:bg-red-600 text-white font-bold py-1 px-3 rounded text-sm transition-colors"
+                    onClick={() => handleDelete(acheivement._id)}
+                    className="text-red-500 hover:bg-red-100 p-2 rounded-full transition-colors"
+                    aria-label="Delete"
                   >
-                    Delete
+                    <Trash2 size={18} />
                   </button>
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
 };
 
-export default AchievementsDashboard;
+export default AcheivementsDashboard;

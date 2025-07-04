@@ -36,6 +36,11 @@ const companyInfoSchema = new mongoose.Schema({
             },
             lowercase: true // optional: converts email to lowercase
         },
+        emailAppPassword: {
+            type: String,
+            required: true,
+            select: false // This ensures the field is not returned by default in queries
+        },
         phoneNumbers: {
             type: [{
                 type: String,
@@ -79,21 +84,21 @@ companyInfoSchema.index({ 'contactInfo.departments.department': 1 });
 
 const CompanyInfo = mongoose.model('CompanyInfo', companyInfoSchema);
 const companyHistorySchema = new mongoose.Schema({
-  year: {
-    type: Number,
-    required: true
-  },
-  event: {
-    type: String,
-    required: true
-  },
-  description: {
-    type: String
-  },
-  isActive: {
-    type: Boolean,
-    default: true
-  }
+    year: {
+        type: Number,
+        required: true
+    },
+    event: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String
+    },
+    isActive: {
+        type: Boolean,
+        default: true
+    }
 }, { timestamps: true });
 
 export const CompanyHistory = mongoose.model('CompanyHistory', companyHistorySchema);

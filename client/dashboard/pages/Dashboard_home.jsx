@@ -1,12 +1,34 @@
-import React from 'react'
-import LeftSideNavbar from '../components/LeftSideNavbar.jsx'
+// import React from 'react'
+// import LeftSideNavbar from '../components/LeftSideNavbar.jsx'
+// import constructionImage from "../../src/assets/constrcution2.jpg"
+
+// function Dashboard_home() {
+//   return (
+//     <>
+      
+//       <LeftSideNavbar/>
+//       <div className='bg-[url(`${constructionImage}`)]'></div>
+//     </>
+//   )
+// }
+
+// export default Dashboard_home
+import React from 'react';
+import LeftSideNavbar from '../components/LeftSideNavbar.jsx';
+import constructionImage from "../../src/assets/constrcution2.jpg";
 
 function Dashboard_home() {
   return (
-    <>
-      <LeftSideNavbar/>
-    </>
-  )
+    <div className="flex h-screen">
+      <LeftSideNavbar />
+      <div 
+        className="flex-1 bg-cover bg-center"
+        style={{ backgroundImage: `url(${constructionImage})` }}
+      >
+        {/* Your dashboard content goes here */}
+      </div>
+    </div>
+  );
 }
 
-export default Dashboard_home
+export default Dashboard_home;
