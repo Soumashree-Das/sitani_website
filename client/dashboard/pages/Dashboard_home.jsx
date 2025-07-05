@@ -23,7 +23,7 @@ function Dashboard_home() {
       <LeftSideNavbar />
       <div 
         className="flex-1 bg-cover bg-center"
-        style={{ backgroundImage: `url(${constructionImage})` }}
+        // style={{ backgroundImage: `url(${constructionImage})` }}
       >
         {/* Your dashboard content goes here */}
       </div>

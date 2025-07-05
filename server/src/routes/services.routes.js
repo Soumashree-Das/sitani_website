@@ -7,7 +7,8 @@ import {
     updateService,
     deleteService,
     getActiveServices,
-    getServiceStats
+    getServiceStats,
+    getFeaturedServices
 } from '../controllers/services.controller.js';
 import { serviceImageUpload } from "../middlewares/fileUpload.middleware.js"
 
@@ -22,6 +23,7 @@ router.post('/create',
 router.get('/', getAllServices); // Get all services with optional filtering
 
 router.get('/active', getActiveServices); // Get only active services
+router.get('/featured', getFeaturedServices); // Get only active services
 
 router.get('/stats', getServiceStats); // Get service statistics
 

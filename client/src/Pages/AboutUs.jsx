@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
@@ -42,7 +41,9 @@ const AboutUs = () => {
   const fetchCompanyInfo = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:8090/api/v1/companyInfo/aboutus");
+      const response = await fetch(
+        "http://localhost:8090/api/v1/companyInfo/aboutus"
+      );
       const data = await response.json();
 
       if (data.success) {
@@ -62,11 +63,15 @@ const AboutUs = () => {
       setAchievementsLoading(true);
       setAchievementsError(null);
 
-      const response = await fetch("http://localhost:8090/api/v1/acheivements/featured", {
-        credentials: "include",
-      });
+      const response = await fetch(
+        "http://localhost:8090/api/v1/acheivements/featured",
+        {
+          credentials: "include",
+        }
+      );
 
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok)
+        throw new Error(`HTTP error! status: ${response.status}`);
 
       const result = await response.json();
       if (Array.isArray(result)) {
@@ -109,7 +114,8 @@ const AboutUs = () => {
   };
 
   const nextSlide = () => setCurrentSlide((prev) => (prev + 1) % slides.length);
-  const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const prevSlide = () =>
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
   const navigate = useNavigate();
 
@@ -155,21 +161,24 @@ const AboutUs = () => {
           ref={(el) => (videoRefs.current[0] = el)}
           src={projectVideo1}
           autoPlay
-          muted={!isVisible}
+          muted={isMuted}
           loop
           playsInline
           preload="auto"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-white px-4 text-center">
-          <button
-            onClick={() => setIsVisible(!isVisible)}
-            className="bg-amber-500 text-stone-900 px-6 py-2 rounded-full hover:bg-amber-600 transition-all duration-300 font-semibold"
-          >
-            {isVisible ? "Mute Video 🔇" : "Unmute Video 🔊"}
-          </button>
-        </div>
+        <button
+          onClick={() => setIsMuted(!isMuted)}
+          className="absolute top-6 right-6 p-3 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm transition"
+        >
+          {isMuted ? (
+            <VolumeX className="w-6 h-6 text-amber-500" />
+          ) : (
+            <Volume2 className="w-6 h-6 text-amber-500" />
+          )}
+        </button>
       </div> */}
+
       <div className="relative w-full h-screen overflow-hidden">
         <video
           ref={(el) => (videoRefs.current[0] = el)}
@@ -179,12 +188,13 @@ const AboutUs = () => {
           loop
           playsInline
           preload="auto"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain" // <== Changed from object-cover to object-contain
         />
-        {/* Corner Mute / Unmute Button */}
+
+        {/* Bottom-Right Mute / Unmute Button */}
         <button
           onClick={() => setIsMuted(!isMuted)}
-          className="absolute top-6 right-6 p-3 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm transition"
+          className="absolute bottom-6 right-6 p-3 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-sm transition"
         >
           {isMuted ? (
             <VolumeX className="w-6 h-6 text-amber-500" />
@@ -196,19 +206,25 @@ const AboutUs = () => {
 
       {/* Include the rest of your sections like Company Info, Vision, Achievements here */}
       {/* Main Content Section */}
-      <div className="bg-[#FBFFF1] py-20">
+      <div className="bg-[#FBFFF1] py-5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Section Header */}
-          <div className="text-center mb-16">
+          {/* <div className="text-center mb-16">
             <div className="w-1 h-16 bg-amber-500 mx-auto mb-6"></div>
             <h2 className="text-amber-600 text-lg font-medium tracking-wider uppercase mb-4">
               ABOUT US
             </h2>
+            
+          </div> */}
+          <div className="text-center mb-16">
+            <div className="w-16 h-px bg-amber-500 mx-auto mb-4"></div>
+            <p className="text-amber-500 uppercase tracking-wide text-sm font-semibold mb-2">
+              ABOUT US
+            </p>
             <h3 className="text-5xl font-bold text-stone-800 mb-8">
               {companyInfo?.title || "Serving Since 1950"}
             </h3>
           </div>
-
           {/* Story and Vision Section */}
           <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
             {/* Our Story */}

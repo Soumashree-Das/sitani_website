@@ -207,7 +207,11 @@ const ServicesDashboard = () => {
                     onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
                     className="text-amber-500"
                   />
-                  Featured
+                  <span>
+                    Featured 
+                    <h6 className='font-light'>(tick the box to display the service on website)</h6>
+                  </span>
+                  
                 </label>
               </div>
 
@@ -236,13 +240,6 @@ const ServicesDashboard = () => {
           <div key={service._id} className="border border-stone-700 rounded-lg p-4 bg-[#FBFFF1] shadow">
             <div className="flex justify-between items-start">
               <div className="flex gap-4 flex-1">
-                {service.imageUrl && (
-                  <img
-                    src={`http://localhost:8090${service.imageUrl}`}
-                    alt={service.heading}
-                    className="w-20 h-20 object-cover rounded"
-                  />
-                )}
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="text-xl font-semibold text-stone-900">{service.heading}</h3>

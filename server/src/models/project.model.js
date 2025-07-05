@@ -25,7 +25,7 @@ const projectSchema = new mongoose.Schema({
     name: String,
     role: String
   }],
-  images: [String], // Store file paths or URLs to images
-  videos: [String]  // Store file paths or URLs to videos
+  images: [String], 
+  videos: [String]  
 }, { timestamps: true });
 export const Project = mongoose.model('Project', projectSchema);

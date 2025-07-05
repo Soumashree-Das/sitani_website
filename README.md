@@ -34,14 +34,6 @@ Implementation Checklist
 
 
 #TO DO 
-1.email sending fix ✅
-2.services need images✅
-3.projects when clicked show details of the project - ✅
-            a. video (when not clicked stays still)
-            b. initially very few details
-4.about us -
-            a. video in the hero section . below it all the details of the page as it is
-            b. change the ui (remove the learn more)
-5.fix all minor inconsistencies in the ui
-6.acheivements dashboard ✅
-7.login using only 2 email and password ✅
+1. reply mail to sender
+2. video not taking input for projects
+3. acheivements not editing

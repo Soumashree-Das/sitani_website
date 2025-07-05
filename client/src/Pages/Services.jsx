@@ -258,7 +258,7 @@ const Services = () => {
     const fetchServices = async () => {
       try {
         setLoading(true);
-        const response = await fetch("http://localhost:8090/api/v1/services/");
+        const response = await fetch("http://localhost:8090/api/v1/services/featured");
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

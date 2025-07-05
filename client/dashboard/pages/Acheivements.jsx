@@ -257,7 +257,7 @@ const AcheivementsDashboard = () => {
                     }
                     className="text-amber-500 rounded"
                   />
-                  Featured Acheivement
+                  Featured Acheivement (featured acheivements will be displayed on the website)
                 </label>
               </div>
 

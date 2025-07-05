@@ -162,6 +162,15 @@ export const getActiveServices = async (req, res) => {
   }
 };
 
+export const getFeaturedServices = async (req, res) => {
+  try {
+    const services = await Service.find({ featured: true }).sort('displayOrder').limit(Number(req.query.limit) || 10);
+    res.json({ success: true, data: services });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
 export const getServiceStats = async (req, res) => {
   try {
     const total = await Service.countDocuments();

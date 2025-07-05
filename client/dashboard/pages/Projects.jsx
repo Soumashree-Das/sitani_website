@@ -296,7 +296,7 @@
 //                     }
 //                     className="h-5 w-5 text-amber-600 rounded focus:ring-amber-500"
 //                   />
-//                   Featured Project
+//                   Featured Project (featured projects will be displayed on the website)
 //                 </label>
 
 //                 <div>
@@ -732,7 +732,8 @@ const ProjectsDashboard = () => {
                     }
                     className="h-5 w-5 text-amber-600 rounded focus:ring-amber-500"
                   />
-                  Featured Project
+                  Featured Project (featured projects will be displayed on the
+                  website)
                 </label>
 
                 <div>
@@ -779,7 +780,16 @@ const ProjectsDashboard = () => {
                     + Add Team Member
                   </button>
                 </div>
-
+                <span>
+                  <h2 className="font-semibold mb-2 text-stone-700">
+                  Upload media 
+                </h2>
+                <p className=" mb-2 text-amber-600 font-thin">
+                  (The previous media will be deleted . Only the
+                  new ones will be displayed)
+                </p>
+                </span>
+                
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block mb-1 text-sm text-stone-700">
