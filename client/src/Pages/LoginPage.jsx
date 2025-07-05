@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Lock, Mail } from 'lucide-react';
 
+const BASE_URL = import.meta.env.VITE_SERVER_URL
+
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,7 +18,7 @@ const LoginPage = () => {
     setError('');
 
     try {
-      const response = await axios.post('http://localhost:8090/api/v1/auth/login', {
+      const response = await axios.post(`${BASE_URL}/api/v1/auth/login`, {
         email,
         password
       }, {

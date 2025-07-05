@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { LogOut } from 'lucide-react';
-
+const BASE_URL = import.meta.env.VITE_SERVER_URL
 const LogoutButton = () => {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:8090/api/v1/auth/logout', {}, {
+      await axios.post(`${BASE_URL}/auth/logout`, {}, {
         withCredentials: true
       });
       navigate('/login');

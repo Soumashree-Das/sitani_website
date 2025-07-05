@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Eye, EyeOff, Plus, Edit, Trash2 } from "lucide-react";
-
+const BASE_URL = import.meta.env.VITE_SERVER_URL
 const AnnouncementsDashboard = () => {
   const [announcements, setAnnouncements] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,7 +21,7 @@ const AnnouncementsDashboard = () => {
     const fetchAnnouncements = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8090/api/v1/announcements/get"
+          `${BASE_URL}/api/v1/announcements/get`
         );
         setAnnouncements(response.data.data);
       } catch (error) {
@@ -59,20 +59,20 @@ const AnnouncementsDashboard = () => {
       if (currentAnnouncement) {
         // Update existing announcement
         response = await axios.put(
-          `http://localhost:8090/api/v1/announcements/update/${currentAnnouncement._id}`,
+          `${BASE_URL}/api/v1/announcements/update/${currentAnnouncement._id}`,
           payload
         );
       } else {
         // Create new announcement
         response = await axios.post(
-          "http://localhost:8090/api/v1/announcements/create",
+          "${BASE_URL}/api/v1/announcements/create",
           payload
         );
       }
 
       // Refresh announcements and close modal
       const updatedResponse = await axios.get(
-        "http://localhost:8090/api/v1/announcements/get"
+        "${BASE_URL}/api/v1/announcements/get"
       );
       setAnnouncements(updatedResponse.data.data);
       setIsModalOpen(false);
@@ -116,10 +116,10 @@ const AnnouncementsDashboard = () => {
     if (window.confirm("Are you sure you want to delete this announcement?")) {
       try {
         await axios.delete(
-          `http://localhost:8090/api/v1/announcements/delete/${id}`
+          `${BASE_URL}/api/v1/announcements/delete/${id}`
         );
         const response = await axios.get(
-          "http://localhost:8090/api/v1/announcements/get"
+          "${BASE_URL}/api/v1/announcements/get"
         );
         setAnnouncements(response.data.data);
       } catch (error) {

@@ -16,7 +16,7 @@
 import React from 'react';
 import LeftSideNavbar from '../components/LeftSideNavbar.jsx';
 import constructionImage from "../../src/assets/constrcution2.jpg";
-
+const BASE_URL = import.meta.env.VITE_SERVER_URL;
 function Dashboard_home() {
   return (
     <div className="flex h-screen">

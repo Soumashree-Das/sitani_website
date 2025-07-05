@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Plus, X, Edit, Trash2, Star } from "lucide-react";
-
+const BASE_URL = import.meta.env.VITE_SERVER_URL
 const AcheivementsDashboard = () => {
   const [acheivements, setAcheivements] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +23,7 @@ const AcheivementsDashboard = () => {
 
   const fetchAcheivements = async () => {
     try {
-      const response = await fetch("http://localhost:8090/api/v1/acheivements");
+      const response = await fetch(`${BASE_URL}/api/v1/acheivements`);
       if (!response.ok) throw new Error("Failed to fetch acheivements");
       const data = await response.json();
       setAcheivements(Array.isArray(data) ? data : data.data || []);
@@ -80,7 +80,7 @@ const AcheivementsDashboard = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8090/api/v1/acheivements/${id}`,
+        `${BASE_URL}/api/v1/acheivements/${id}`,
         {
           method: "DELETE",
         }
@@ -105,8 +105,8 @@ const AcheivementsDashboard = () => {
       };
 
       const url = editingAcheivement
-        ? `http://localhost:8090/api/v1/acheivements/${editingAcheivement._id}`
-        : "http://localhost:8090/api/v1/acheivements";
+        ? `${BASE_URL}/api/v1/acheivements/${editingAcheivement._id}`
+        : "${BASE_URL}/api/v1/acheivements";
 
       const method = editingAcheivement ? "PUT" : "POST";
 

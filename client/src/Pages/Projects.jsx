@@ -18,6 +18,8 @@ import {
   MapPin,
 } from "lucide-react";
 
+const BASE_URL = import.meta.env.VITE_SERVER_URL;
+
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +36,7 @@ const Projects = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          "http://localhost:8090/api/v1/projects/featured"
+          `${BASE_URL}/api/v1/projects/featured`
         );
 
         if (!response.ok) {
@@ -109,8 +111,8 @@ const Projects = () => {
       setMediaLoading(true);
 
       const [imagesResponse, videosResponse] = await Promise.all([
-        fetch(`http://localhost:8090/api/v1/projects/${projectId}/images`),
-        fetch(`http://localhost:8090/api/v1/projects/${projectId}/videos`),
+        fetch(`${BASE_URL}/api/v1/projects/${projectId}/images`),
+        fetch(`${BASE_URL}/api/v1/projects/${projectId}/videos`),
       ]);
 
       const imagesData = await imagesResponse.json();
@@ -122,14 +124,14 @@ const Projects = () => {
       const imageURLs = imagesData.success
         ? imagesData.images.map((path) => {
             const filename = extractFilename(path);
-            return `http://localhost:8090/api/v1/projects/media/image/${filename}`;
+            return `${BASE_URL}/api/v1/projects/media/image/${filename}`;
           })
         : [];
 
       const videoURLs = videosData.success
         ? videosData.videos.map((path) => {
             const filename = extractFilename(path);
-            return `http://localhost:8090/api/v1/projects/media/video/${filename}`;
+            return `${BASE_URL}/api/v1/projects/media/video/${filename}`;
           })
         : [];
 

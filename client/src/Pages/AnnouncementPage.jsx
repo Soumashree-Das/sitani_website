@@ -15,6 +15,8 @@ const AnnouncementPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const BASE_URL = import.meta.url.VITE_SERVER_URL ;
+  
   // Mock projects data (matching your image)
   const projects = [
     {
@@ -60,7 +62,7 @@ const AnnouncementPage = () => {
     const fetchAnnouncements = async () => {
       try {
         const response = await fetch(
-          "http://localhost:8090/api/v1/announcements/get"
+          `${BASE_URL}/api/v1/announcements/get`
         );
         const data = await response.json();
 

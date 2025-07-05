@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, Star, X, Eye, EyeOff } from 'lucide-react';
 
+const BASE_URL2 = import.meta.env.VITE_SERVER_URL;
 
 const ServicesDashboard = () => {
   const [services, setServices] = useState([]);
@@ -18,7 +19,7 @@ const ServicesDashboard = () => {
   });
   const [imageFile, setImageFile] = useState(null);
 
-  const BASE_URL = 'http://localhost:8090/api/v1/services';
+  const BASE_URL = `${BASE_URL2}/api/v1/services`;
 
   useEffect(() => {
     fetchServices();

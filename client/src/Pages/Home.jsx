@@ -17,6 +17,8 @@ import constructionImage3 from "../assets/constrcution3.jpg";
 import constructionImage2 from "../assets/constrcution2.jpg";
 import constructionImage1 from "../assets/construction1.webp";
 
+const BASE_URL = import.meta.env.VITE_SERVER_URL
+
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
