@@ -6,79 +6,156 @@ import CompanyInfo from '../models/companyInfo.model.js';
 export const processCompanyForm = companyImageUpload.single('image');
 
 // Unified Update Function for both AboutUs and ContactInfo
+// export const updateCompanyInfo = async (req, res) => {
+//   try {
+//     const { body, file } = req;
+
+//     // Initialize update object
+//     const updateData = { lastUpdated: new Date() };
+
+//     // Process AboutUs data if present in request
+//     if (body.mission || body.vision || body.title || file) {
+//       updateData.aboutUs = {
+//         mission: body.mission,
+//         vision: body.vision,
+//         title: body.title,
+//         location: {
+//           address: body.address,
+//           city: body.city,
+//           country: body.country,
+//           timezone: body.timezone
+//         },
+//         lastUpdated: new Date()
+//       };
+
+//       if (file) {
+//         updateData.aboutUs.imageUrl = `/uploads/company-images/${file.filename}`;
+//         // updateData.aboutUs.imageUrl = path.join(process.cwd(),`/uploads/company-images/${file.filename}`);
+//       }
+//     }
+
+//     // Process ContactInfo data if present in request
+//     if (body.email || body.phoneNumbers) {
+//       updateData.contactInfo = {
+//         email: body.email,
+//         emailAppPassword:body.emailAppPassword,
+//         phoneNumbers: body.phoneNumbers ?
+//           (Array.isArray(body.phoneNumbers) ? body.phoneNumbers : [body.phoneNumbers]) :
+//           [],
+//         availableHours: {
+//           weekdays: {
+//             from: body.weekdayFrom || '09:00',
+//             to: body.weekdayTo || '17:00'
+//           },
+//           weekends: {
+//             from: body.weekendFrom,
+//             to: body.weekendTo
+//           },
+        
+//         },
+//         lastUpdated: new Date()
+//       };
+//     }
+
+//     // Update document
+//     const companyInfo = await CompanyInfo.findOneAndUpdate(
+//       {},
+//       { $set: updateData },
+//       {
+//         new: true,
+//         upsert: true,
+//         setDefaultsOnInsert: true,
+//         runValidators: true
+//       }
+//     );
+
+//     // Return both sections if updated, or just the updated ones
+//     const responseData = {};
+//     if (updateData.aboutUs) responseData.aboutUs = companyInfo.aboutUs;
+//     if (updateData.contactInfo) responseData.contactInfo = companyInfo.contactInfo;
+
+//     res.json({ success: true, data: responseData });
+//   } catch (error) {
+//     handleCompanyError(res, error);
+//   }
+// };
+
 export const updateCompanyInfo = async (req, res) => {
   try {
     const { body, file } = req;
 
-    // Initialize update object
+    /* 1️⃣  get current doc so we can keep the old image */
+    const existing = await CompanyInfo.findOne();
+
     const updateData = { lastUpdated: new Date() };
 
-    // Process AboutUs data if present in request
+    /* ───── About Us ───── */
     if (body.mission || body.vision || body.title || file) {
       updateData.aboutUs = {
-        mission: body.mission,
-        vision: body.vision,
-        title: body.title,
+        mission:     body.mission,
+        vision:      body.vision,
+        title:       body.title,
         location: {
-          address: body.address,
-          city: body.city,
-          country: body.country,
-          timezone: body.timezone
+          address:  body.address,
+          city:     body.city,
+          country:  body.country,
+          timezone: body.timezone,
         },
-        lastUpdated: new Date()
+        lastUpdated: new Date(),
       };
 
       if (file) {
+        // new image chosen → overwrite
         updateData.aboutUs.imageUrl = `/uploads/company-images/${file.filename}`;
-        // updateData.aboutUs.imageUrl = path.join(process.cwd(),`/uploads/company-images/${file.filename}`);
+      } else if (existing?.aboutUs?.imageUrl) {
+        // no new file → keep the old path
+        updateData.aboutUs.imageUrl = existing.aboutUs.imageUrl;
       }
     }
 
-    // Process ContactInfo data if present in request
+    /* ───── Contact Info ───── */
     if (body.email || body.phoneNumbers) {
       updateData.contactInfo = {
-        email: body.email,
-        emailAppPassword:body.emailAppPassword,
-        phoneNumbers: body.phoneNumbers ?
-          (Array.isArray(body.phoneNumbers) ? body.phoneNumbers : [body.phoneNumbers]) :
-          [],
+        email:            body.email,
+        emailAppPassword: body.emailAppPassword,
+        phoneNumbers:     Array.isArray(body.phoneNumbers)
+          ? body.phoneNumbers
+          : body.phoneNumbers
+          ? [body.phoneNumbers]
+          : [],
         availableHours: {
           weekdays: {
-            from: body.weekdayFrom || '09:00',
-            to: body.weekdayTo || '17:00'
+            from: body.weekdayFrom || "09:00",
+            to:   body.weekdayTo   || "17:00",
           },
           weekends: {
             from: body.weekendFrom,
-            to: body.weekendTo
+            to:   body.weekendTo,
           },
-        
         },
-        lastUpdated: new Date()
+        lastUpdated: new Date(),
       };
     }
 
-    // Update document
+    /* ───── persist ───── */
     const companyInfo = await CompanyInfo.findOneAndUpdate(
       {},
       { $set: updateData },
-      {
-        new: true,
-        upsert: true,
-        setDefaultsOnInsert: true,
-        runValidators: true
-      }
+      { new: true, upsert: true, setDefaultsOnInsert: true, runValidators: true }
     );
 
-    // Return both sections if updated, or just the updated ones
-    const responseData = {};
-    if (updateData.aboutUs) responseData.aboutUs = companyInfo.aboutUs;
-    if (updateData.contactInfo) responseData.contactInfo = companyInfo.contactInfo;
-
-    res.json({ success: true, data: responseData });
+    res.json({
+      success: true,
+      data: {
+        ...(updateData.aboutUs   ? { aboutUs:   companyInfo.aboutUs }   : {}),
+        ...(updateData.contactInfo ? { contactInfo: companyInfo.contactInfo } : {}),
+      },
+    });
   } catch (error) {
     handleCompanyError(res, error);
   }
 };
+
 
 // Get About Us Info (separate)
 export const getAboutUs = async (req, res) => {

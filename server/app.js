@@ -55,5 +55,5 @@ const PORT = process.env.PORT||8000;
 app.listen(PORT,async ()=>{
     await connectDB();
     console.log(`🚀 Server running: http://localhost:${PORT}/api/v1`);
-})
+});
  

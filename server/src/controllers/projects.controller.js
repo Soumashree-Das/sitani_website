@@ -35,101 +35,208 @@ export const getFeaturedProjects = async (req, res) => {
   }
 };
 
+// export const updateProject = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+
+//     // Fetch existing project
+//     const project = await Project.findById(id);
+//     if (!project) {
+//       return res.status(404).json({ success: false, error: 'Project not found' });
+//     }
+
+//     // Remove old images
+//     project.images.forEach(imgPath => {
+//       const fullPath = path.join(__dirname, '..', imgPath);
+//       if (fs.existsSync(fullPath)) {
+//         try {
+//           fs.unlinkSync(fullPath);
+//           // console.log(`Deleted old image: ${fullPath}`);
+//         } catch (error) {
+//           console.error(`Error deleting image ${fullPath}:`, error);
+//         }
+//       }
+//     });
+
+//     // Remove old videos
+//     project.videos.forEach(videoPath => {
+//       const fullPath = path.join(__dirname, '..', videoPath);
+//       if (fs.existsSync(fullPath)) {
+//         try {
+//           fs.unlinkSync(fullPath);
+//           // console.log(`Deleted old video: ${fullPath}`);
+//         } catch (error) {
+//           console.error(`Error deleting video ${fullPath}:`, error);
+//         }
+//       }
+//     });
+
+//     // Prepare new file paths - FIXED: videos now go to correct directory
+//     const imagePaths = req.files?.images?.map(file => `/uploads/project-media/${file.filename}`) || [];
+//     const videoPaths = req.files?.videos?.map(file => `/uploads/project-media/${file.filename}`) || [];
+
+//     // Prepare new update data
+//     const updateData = {
+//       ...req.body,
+//       images: imagePaths,
+//       videos: videoPaths
+//     };
+
+//     // Parse teamMembers if stringified
+//     if (typeof updateData.teamMembers === 'string') {
+//       try {
+//         updateData.teamMembers = JSON.parse(updateData.teamMembers);
+//       } catch (e) {
+//         return res.status(400).json({ success: false, error: 'Invalid teamMembers JSON' });
+//       }
+//     }
+
+//     // Parse other potential JSON fields
+//     const jsonFields = ['technologies', 'features', 'challenges'];
+//     jsonFields.forEach(field => {
+//       if (typeof updateData[field] === 'string') {
+//         try {
+//           updateData[field] = JSON.parse(updateData[field]);
+//         } catch (e) {
+//           console.warn(`Invalid ${field} JSON, keeping as string:`, updateData[field]);
+//         }
+//       }
+//     });
+
+//     // Update project in DB
+//     const updatedProject = await Project.findByIdAndUpdate(id, updateData, {
+//       new: true,
+//       runValidators: true
+//     });
+
+//     res.json({
+//       success: true,
+//       message: 'Project updated successfully (media replaced)',
+//       data: updatedProject
+//     });
+
+//   } catch (err) {
+//     console.error('Update error:', err);
+//     if (err.name === 'ValidationError') {
+//       return res.status(400).json({
+//         success: false,
+//         error: Object.values(err.errors).map(e => e.message)
+//       });
+//     }
+//     res.status(500).json({ success: false, error: err.message });
+//   }
+// };
+
 export const updateProject = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // DEBUG
-    // console.log('BODY:', req.body);
-    // console.log('FILES:', req.files);
-
-    // Fetch existing project
+    /* 1️⃣  Load existing project */
     const project = await Project.findById(id);
     if (!project) {
-      return res.status(404).json({ success: false, error: 'Project not found' });
+      return res
+        .status(404)
+        .json({ success: false, error: "Project not found" });
     }
 
-    // Remove old images
-    project.images.forEach(imgPath => {
-      const fullPath = path.join(__dirname, '..', imgPath);
-      if (fs.existsSync(fullPath)) {
-        try {
-          fs.unlinkSync(fullPath);
-          // console.log(`Deleted old image: ${fullPath}`);
-        } catch (error) {
-          console.error(`Error deleting image ${fullPath}:`, error);
+    /* 2️⃣  Determine media‑handling mode */
+    const {
+      imageOption = req.files?.images?.length ? "replace" : "keep",
+      videoOption = req.files?.videos?.length ? "replace" : "keep",
+    } = req.body; // explicit override possible
+
+    /* 3️⃣  Build new media arrays */
+    const newImagePaths =
+      req.files?.images?.map((f) => `/uploads/project-media/${f.filename}`) ||
+      [];
+    const newVideoPaths =
+      req.files?.videos?.map((f) => `/uploads/project-media/${f.filename}`) ||
+      [];
+
+    // helper to delete physical files
+    const removeFiles = (paths) => {
+      paths.forEach((p) => {
+        const full = path.join(path.resolve(), p); // adjust if needed
+        if (fs.existsSync(full)) {
+          try {
+            fs.unlinkSync(full);
+          } catch (err) {
+            console.error("Failed to delete:", full, err);
+          }
         }
-      }
-    });
-
-    // Remove old videos
-    project.videos.forEach(videoPath => {
-      const fullPath = path.join(__dirname, '..', videoPath);
-      if (fs.existsSync(fullPath)) {
-        try {
-          fs.unlinkSync(fullPath);
-          // console.log(`Deleted old video: ${fullPath}`);
-        } catch (error) {
-          console.error(`Error deleting video ${fullPath}:`, error);
-        }
-      }
-    });
-
-    // Prepare new file paths - FIXED: videos now go to correct directory
-    const imagePaths = req.files?.images?.map(file => `/uploads/project-media/${file.filename}`) || [];
-    const videoPaths = req.files?.videos?.map(file => `/uploads/project-media/${file.filename}`) || [];
-
-    // Prepare new update data
-    const updateData = {
-      ...req.body,
-      images: imagePaths,
-      videos: videoPaths
+      });
     };
 
-    // Parse teamMembers if stringified
-    if (typeof updateData.teamMembers === 'string') {
+    let finalImages = project.images;
+    let finalVideos = project.videos;
+
+    /* 4️⃣  Images */
+    if (imageOption === "replace") {
+      removeFiles(project.images);
+      finalImages = newImagePaths;
+    } else if (imageOption === "append") {
+      finalImages = [...project.images, ...newImagePaths];
+    } // keep → nothing to do
+
+    /* 5️⃣  Videos */
+    if (videoOption === "replace") {
+      removeFiles(project.videos);
+      finalVideos = newVideoPaths;
+    } else if (videoOption === "append") {
+      finalVideos = [...project.videos, ...newVideoPaths];
+    }
+
+    /* 6️⃣  Assemble update payload */
+    const updateData = {
+      ...req.body,
+      images: finalImages,
+      videos: finalVideos,
+    };
+
+    // parse JSONish fields if needed
+    if (typeof updateData.teamMembers === "string") {
       try {
         updateData.teamMembers = JSON.parse(updateData.teamMembers);
-      } catch (e) {
-        return res.status(400).json({ success: false, error: 'Invalid teamMembers JSON' });
+      } catch {
+        return res
+          .status(400)
+          .json({ success: false, error: "Invalid teamMembers JSON" });
       }
     }
 
-    // Parse other potential JSON fields
-    const jsonFields = ['technologies', 'features', 'challenges'];
-    jsonFields.forEach(field => {
-      if (typeof updateData[field] === 'string') {
+    ["technologies", "features", "challenges"].forEach((f) => {
+      if (typeof updateData[f] === "string") {
         try {
-          updateData[field] = JSON.parse(updateData[field]);
-        } catch (e) {
-          console.warn(`Invalid ${field} JSON, keeping as string:`, updateData[field]);
+          updateData[f] = JSON.parse(updateData[f]);
+        } catch {
+          /* leave as string */
         }
       }
     });
 
-    // Update project in DB
-    const updatedProject = await Project.findByIdAndUpdate(id, updateData, {
+    /* 7️⃣  Save */
+    const updated = await Project.findByIdAndUpdate(id, updateData, {
       new: true,
-      runValidators: true
+      runValidators: true,
     });
 
     res.json({
       success: true,
-      message: 'Project updated successfully (media replaced)',
-      data: updatedProject
+      message: "Project updated",
+      data: updated,
     });
-
   } catch (err) {
-    console.error('Update error:', err);
-    if (err.name === 'ValidationError') {
+    console.error("Update error:", err);
+    if (err.name === "ValidationError") {
       return res.status(400).json({
         success: false,
-        error: Object.values(err.errors).map(e => e.message)
+        error: Object.values(err.errors).map((e) => e.message),
       });
     }
     res.status(500).json({ success: false, error: err.message });
   }
 };
+
 
 export const getAllProjects = async (req, res) => {
   try {
