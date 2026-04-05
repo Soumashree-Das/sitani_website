@@ -1,153 +1,95 @@
-MP Sitani & Sons — Construction Company Website
+# MP Sitani & Sons — Construction Company Website
 
-This repository contains the full-stack website developed for MP Sitani & Sons, a construction and infrastructure company.
-The project was built during my internship under a startup, where I was fully responsible for designing and developing the entire MERN-based platform from scratch.
+This repository contains a full-stack website developed for MP Sitani & Sons, a construction and infrastructure company.
 
-The goal of this website is to provide a modern, responsive, and business-ready digital presence where the company can showcase:
+The project was built during an internship, where I was responsible for designing and developing the entire MERN-based platform from scratch.
 
-🏗 Ongoing & completed construction projects
+The website serves as a modern, responsive, and business-ready digital presence for showcasing projects, services, and handling client inquiries.
 
-🧱 Company services & achievements
+---
 
-📞 Contact information & inquiry form
+## Live Website
 
-🔗 Important business links & company details
+https://www.sitani.in/
 
-The platform is actively hosted, used, and managed directly by MP Sitani & Sons.
+(Live and actively used by the client)
 
-🌐 Live Website
+---
 
-🔗 https://www.sitani.in/
+## Project Overview
 
-(Live and in production — maintained by the client)
+This is a full-stack MERN (MongoDB, Express, React, Node.js) application tailored to the operational needs of the company.
 
-🎯 Project Overview
+The platform enables:
+- Showcasing ongoing and completed construction projects  
+- Displaying company services and achievements  
+- Managing inquiries through a contact system  
+- Providing a scalable and maintainable admin dashboard  
 
-This is a MERN (MongoDB, Express, React, Node.js) based full-stack application fully tailored for the operational needs of MP Sitani & Sons.
+---
 
-Key features include:
+## Features
 
-✅ Client-Facing Features
+### Client-Facing Features
 
-Modern UI showcasing company information
+- Modern and responsive UI for company presentation  
+- Project gallery with detailed expandable views  
+- Announcements and updates section  
+- Contact form with direct email delivery  
+- Automated acknowledgement emails to users  
+- Optimized performance and SEO readiness  
 
-Project gallery with expandable details
+---
 
-Announcements & updates section
+### Admin Dashboard (Owner Access Only)
 
-Contact form with direct email delivery to company owners
+- Secure authentication system  
+- Add, edit, and delete projects  
+- Manage announcements and updates  
+- Handle images and project content  
+- View and track contact form submissions  
 
-Automated acknowledgement email sent to the message sender
+---
 
-Fully responsive across devices
-
-Fast loading & SEO-ready
-
-✅ Admin/Dashboard Features (Owner-Only Access)
-
-Secure login system for company owners
-
-Dashboard to manage announcements
-
-Add, edit, delete projects
-
-Manage images and project content
-
-View and track contact messages
-
-All admin functionality is protected and accessible only by the owners
-
-💼 My Role
+## My Role
 
 During the internship, I handled end-to-end ownership of the project:
 
-🎨 Designed the full UI/UX
+- Designed the complete UI/UX  
+- Built the full MERN stack application  
+- Implemented secure authentication for admin access  
+- Developed the admin dashboard and content management system  
+- Integrated email functionality for inquiries and auto-responses  
+- Deployed the application and completed handover  
+- Provided documentation and onboarding support to the client  
+- Ensured scalability and maintainability of the platform  
 
-⚙️ Built the complete MERN stack application
+---
 
-🔐 Implemented secure authentication for the owners
+## Tech Stack
 
-🧩 Created the admin dashboard & management system
+### Frontend
+- React.js  
+- React Router  
+- Tailwind CSS / CSS3  
 
-📩 Integrated mailing system for inquiries + automated replies
+### Backend
+- Node.js  
+- Express.js  
 
-🚀 Final deployment and project handover
+### Database
+- MongoDB (Projects, Announcements, Admin Data)  
 
-📘 Provided documentation and training for the Sitani team
+### Integrations
+- Nodemailer (email delivery and auto-responses)  
+- JWT Authentication  
+- Cloud storage (if applicable: Cloudinary / AWS)  
 
-🛠 Ensured the platform is maintainable and scalable
+### Deployment
+- Frontend: Vercel / Netlify  
+- Backend: Render / Railway / AWS  
+- Database: MongoDB Atlas  
 
-🛠 Tech Stack (MERN)
-Frontend
+---
 
-React.js
-
-React Router
-
-Tailwind CSS / CSS3 (modify based on your actual usage)
-
-Backend
-
-Node.js
-
-Express.js
-
-Database
-
-MongoDB (with project, announcement & admin collections)
-
-Additional Integrations
-
-Nodemailer for email delivery + auto-replies
-
-JWT authentication
-
-Cloud storage / image handling (mention if used: Cloudinary, AWS, etc.)
-
-Deployment
-
-Frontend: Vercel / Netlify (modify if needed)
-
-Backend: Render / Railway / AWS (modify if needed)
-
-Database: MongoDB Atlas
-
-📁 Folder Structure (Example)
-root/
- ├── client/      # React frontend
- ├── server/      # Node + Express backend
- ├── models/      # MongoDB schema
- ├── routes/      # API routes
- ├── controllers/ # Logic for backend operations
- └── README.md
-
-🚀 Getting Started (For Developers)
-
-Clone the repository:
-
-git clone https://github.com/your-username/mpsitani-and-sons.git
-cd mpsitani-and-sons
-
-Install Frontend:
-cd client
-npm install
-npm start
-
-Install Backend:
-cd server
-npm install
-npm run dev
-
-📦 Deployment Notes
-
-The website is currently deployed and maintained by MP Sitani & Sons.
-All content updates (projects, announcements, etc.) are handled directly by the owners using the admin dashboard.
-
-📄 License / Ownership
-
-This project was built exclusively for MP Sitani & Sons during an internship under a startup.
-All rights, branding, assets, and management access belong to the company.
-
-🙌 Acknowledgements
-
-A special thanks to the Sitani & Sons team for trusting me with their digital presence and providing continuous feedback during development.
+## Folder Structure
